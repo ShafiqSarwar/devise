@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= content_for?(:title) ? yield(:title) : "Devise Website" %></title>
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Devise Website" %>">
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => 'reload' %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <header>
+     <% if user_signed_in? %>
+  <li><%= link_to 'Edit account', edit_user_registration_path %></li>
+  <li><%= link_to 'Sign out', destroy_user_session_path, :method=>'delete' %></li>
+<% else %>
+  <li><%= link_to 'Sign in', new_user_session_path %></li>
+  <li><%= link_to 'Sign up', new_user_registration_path %></li>
+<% end %>
+<% if user_signed_in? %>
+  <% if current_user.has_role? :admin %>
+    <li><%= link_to 'Admin', users_path %></li>
+  <% end %>
+<% end %>
+    </header>
+    <main role="main">
+       <%= render 'layouts/messages' %>
+       <%= yield %>
+    </main>
+  </body>
+</html>
